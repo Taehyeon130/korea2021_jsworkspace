@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>복합구조의 레이아웃</title>
+<!-- 처음에 진행하면 파란색이 원하는 화면으로 출력되지 않음
+        초록색이 다 차지해서 밑으로 내려가게 됨 -->
+    <style>
+        #navi{
+            background-color: yellow;
+            width:700px;
+            height:100px
+        }
+
+        #side{
+            background-color: greenyellow;
+            width: 100px;
+            height: 550px;
+            /* 그 아무도 수평공간에 허용하지 않는 block속성을 보리게 하는 방법
+                inline으로 바꾸는 방법!!
+             */
+             display: inline-block; /*인라인과 블럭의 특징을 모두 갖는 속성으로 */
+        }
+
+        #content{
+            background-color: blue;
+            width: 600px;
+            height:550px;
+            display: inline-block;
+            /* 나는 처음에 마진을 이용하는 방법을 생각했지만 이는 옳지 않은것,,,, */
+        }
+
+        #s{
+            background-color: lightsteelblue;
+            position: absolute;
+            left: 0px;
+            top: 10px;
+        }
+
+        #box{
+            background-color: mediumpurple;
+
+        }
+
+        #s2{
+            background-color: navajowhite;
+            position: absolute;
+            left: 10px;
+            top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 모든 태그는 박스모델로 간주되며
+            속성은 크게 block, inline 속성을 갖는다
+            block : 나와 같은 수평공간에 어떤 누구도 허용하지 않음
+                        크기를 지정할 수 있다(width, height 지정 가능)
+            inline : 다른 태그요소과 수평공간에 공존이 가능
+                        크기를 지정할 수 없다(내부 콘텐츠 만큼만 늘어남)
+     -->
+
+     <!-- 왜 모든 태그는 왼쪽 상단으로 향할까?
+            - 왼쪽 상단을 기준으로 했기 때문에
+              여기서 알수 있는 것, 개발자가 포지션을 지정하지 않아도 , 이미 왼쪽 상단을 기준으로한
+              포지션이 디폴트로 지정되어 있다.
+              그래서 이러한 포지션을 position:relative; 라 한다
+     -->
+
+    <!-- <span id ="s">난 span</span>  
+    <span id ="s2">난 span2</span>  
+    <div id="box">난 div</div> -->
+
+    <!-- span은 텍스트 사이즈 만큼만 차지 : inline
+           div는 수평방향으로 전부다 차지 : block
+     -->
+
+    <div id="navi">노란색박스</div> 
+    <!-- 블럭이어서 노란색다음으로 초록색이 오지 못한것이다. -->
+    <div id="side">사이드</div>
+    <div id="content">콘텐츠</div>
+
+</body>
+</html>

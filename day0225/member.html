@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원가입</title> 
+<!-- 헤드에만 가능 title은 -->
+<style>
+    /* 이 영역은 스타일 시트의 영역 즉 html 태그 영역이 아님
+       따라서 스타일 시트 문법만 작성 가능하다
+       스타일 태그를 이용하면 문서내에 스타일 시트를 적용할 대상을 
+       일괄적으로 지정 및 적용할 수 있다..
+       스타일 시트의 문법 구조
+       누구를{어떻게~~}   
+       누구를 지칭할 때 사용하는 CSS이 요소를 가리켜 선택자(selector)  
+        */
+
+    td{   /*임베디드 방식*/
+        font-size: 9px;
+        color:skyblue;
+    }
+    select{
+        color:rgb(90, 203, 248);
+    }
+    input{
+        background:rgb(224, 239, 245);
+        border:1px solid skyblue /*실선, dotted 점선*/
+    }
+    option{
+        background-color: skyblue;
+        color:white;
+    }
+/*일괄적용되면서 원하는 곳에만 적용시킬 수 있는 나만이 스타일 정의
+  이러한 스타일 시트 블럭을 가리켜 클래스라 한다*/
+.title_style{
+    text-align: center;
+}
+textarea{
+    background-color:rgb(224, 239, 245);
+    background-image: url(data:image/jpeg;base64,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);
+    background-repeat: no-repeat;
+    width:600px;
+    height:300px;
+    background-size: 600px 300px;
+    padding:0px;
+    margin:0px;
+}
+</style>
+</head>
+<body>
+    <table border="1px" align="center" width="700px">
+        <tr >
+            <td colspan="2" align="center" style="font-size:20px;color:darksalmon;background-color: lightgrey ;font-weight:bold;">회원가입</td>
+        </tr>      <!-- 일회성일 경우에만 이득 /인라인 방식-->
+        <tr >
+            
+            <td class="title_style">ID</td>
+            <td><input type="text" placeholder="Your ID"></td>
+        </tr>
+        <tr >
+            <td class="title_style">Password</td>
+            <td><input type="password" placeholder="Your Password"></td>
+        </tr>
+        <tr>
+            <td class="title_style">Name</td>
+            <td><input type="text" placeholder="Your Name"></td>
+        </tr>
+        <tr>
+            <td class="title_style">Phone</td>
+            <td>
+                <input type="text" placeholder="국번"> -
+                <input type="text" placeholder="앞자리"> -
+                <input type="text" placeholder="뒷자리">
+            </td>
+        </tr>
+        <tr>
+            <td class="title_style">Email</td>
+            <td>
+                <input type="text" placeholder="Mail ID">@
+                <select>
+                    <option value="">gmail.com</option>
+                    <option value="">nate.com</option>
+                    <option value="">daum.net</option>
+                    <option value="">naver.com</option>
+                    <option value="">직접입력</option>
+
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="title_style">Skill</td>
+            <td>
+                <input type="checkbox"> node.js
+                <input type="checkbox"> oracle
+                <input type="checkbox"> mysql
+                <input type="checkbox"> javascript
+                <input type="checkbox"> css
+                <input type="checkbox"> react
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="title_style">email receive</td>
+            <td>
+                <input type="radio" name="mail"> Yes
+                <input type="radio" name="mail"> No
+            </td>
+        </tr>
+
+        <tr>
+            <td class="title_style">introduction</td>
+            <td>
+
+                <textarea ></textarea>
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td colspan="2">
+                <button>가입</button>
+            </td>
+        </tr>
+        
+    </table>
+    
+    
+    <hr>
+    
+    <!-- 목록을 표현해보자!!
+        순서 있는 목록 : ordered list (ol)
+        순서 없는 목록 : unordered list (ul)
+    -->
+
+    <ol>
+        <li>망고</li>
+        <li>키위</li>
+        <li>한라봉</li>
+        <li>딸기</li>
+    </ol>
+
+    <ul>
+        <li>망고</li>
+        <li>키위</li>
+        <li>한라봉</li>
+        <li>딸기</li>
+    </ul>
+
+<!-- h 제목태그는 1에서 6까지 지원됨 
+    태그를 보여지는 대로 쓰면, 스크린 리더기 등에 의해
+    해석에 문제가 생김... 태그 사용 시 따라서 디자인 결과로 판단하지 말고
+    각 태그가 가진 고유의 의미를 이용해야 한다(시멘틱=sementic)
+    즉 각 태그에는 이미 의미가 부여되어 있고, 그 의미를 살려서 쓰자!!!
+-->
+    <h1>더미 텍스트</h1>
+    <h2>더미 텍스트</h2>
+    <h3>더미 텍스트</h3>
+    <h4>더미 텍스트</h4>
+    <h5>더미 텍스트</h5>
+    <h6>더미 텍스트</h6>
+
+    <img src="https://cdn3.iconfinder.com/data/icons/fruits-52/150/icon_fruit_banana-128.png">
+    
+    <p>
+        <!-- span은 그저 마크업이 목적이다 -->
+       <span style="font-size: 90px;">Lorem</span> <b>ipsum</b> dolor sit amet, consectetuer adipiscing elit. 
+    <!-- 위처럼 설정할 경우 이 글의 제목이라고 인식하지 않음
+    의미에 맞게 제목을 하겠다면 h를 사용해야함 -->
+    </p>
+    <p>
+        Aenean commodo ligula eget dolor. Aenean massa.
+    </p>
+    <p>
+        Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.  
+    </p>
+    <p>
+   Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+    Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. 
+    Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. 
+    Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. 
+    Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. 
+    Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. 
+    Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. 
+    Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. 
+    </p>
+    Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. 
+    Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; 
+    In ac dui quis mi consectetuer lacinia. Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. 
+    Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc.
+    Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut
+    
+</body>
+</html>
