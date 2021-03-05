@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<script>
+    var status;
+    var flag = true; //삼항연산자의 판단대삭이 될 논리값
+                            // 아래의 삼항연산자는 이 값이 true일때 on을 반환
+                            // false일때 off를 반환하고 있다.
+
+    function openClose(){
+        // true이면 on fasle 이면 off
+        status = (flag)? "on":"off";
+
+        document.querySelector("#folder").src="../images/folder_"+status+".jpg"
+        flag=!flag;
+        console.log("현재 status=", status,"현재 flag=",flag);
+    }
+
+</script>
+
+</head>
+<body>
+    <img id = "folder" src="../images/folder_off.jpg" onClick="openClose()">
+</body>
+</html>
