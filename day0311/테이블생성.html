@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<script>
+    // document.write()는 문자열에 태그를 넣어 출력하는 방식
+    // 하지만 이방식만 있는게 아니라 createElement()도 이용 가능
+
+    window.addEventListener("load",function(){
+        createTable();
+    });
+
+    function createTable(){
+        //문서 내에 없었던 태그를 create 처리하여 생성하는 방법으로 테이블 구성하기
+        
+        //몇 층의 몇 호수로 생성할지 프롬프트를 이용하여 입렵받아보자
+
+        var f = parseInt(prompt("원하는 층수 : "));
+        var h = parseInt(prompt("원하는 호수 :"));
+
+        //이 건축물의 콘크리트 두께도 입력받아서 처리
+        var c = parseInt(prompt("건물 두께 : "));
+        var table = document.createElement("table")  //<table></table> 와 같다
+        table.border=c+"px";
+        //table.style로 하게 되면 table 테두리에만 영향을 주게 된다.
+        table.style.width=500+"px";
+
+        for (var j=f;j>0;j--){
+            var tr = document.createElement("tr"); //<tr></tr>
+            table.appendChild(tr); //tr을 table에 부착시키기
+            for(var i=1;i<=h;i++){
+                var td = document.createElement("td"); //<td></td>
+                td.innerText=j+"0"+i+"호";
+                tr.appendChild(td); //td를 tr에 부착   
+            }
+        }
+        document.body.appendChild(table); // body에 부착
+    }
+
+</script>
+</head>
+<body>
+    
+</body>
+</html>

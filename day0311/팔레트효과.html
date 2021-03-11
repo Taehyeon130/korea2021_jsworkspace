@@ -1,0 +1,75 @@
+<!-- 해결 못했으 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<style>
+    .wrapper{
+        width:700px;
+        height: 600px;
+        background-color: blanchedalmond;
+        margin :auto;
+        overflow: hidden; /*float 된 자식이 있기때문에 */
+    }
+
+    .box{
+        width:100px;
+        height:100px;
+        float :left;
+    }
+
+    #content{
+        width:100%;
+        height:500px;
+        clear: both; /*float 밑으로 들어가지 않겠다*/
+        background-color: cornsilk;
+    }
+
+</style>
+
+<script>
+    var content;
+
+    // 함수 호출자가 함수 내부에서 사용할 변수 값을 결정지어야함
+    // == 매개변수가 있는 함수
+    function setBg(c){
+        // 문서 내에 content div 에 배경색 적용하되, 선택한 썸네일과 같은 색으로
+
+        content = document.getElementById("content");
+
+         content.style.background=c;
+        
+    }
+    //  배경색을 넘겨받지 말고, 그 배경색이 적용된 div를 조사하여 색상을 넣으면 ?
+    function setBg2(obj){
+        // alert("당신이 선택한 div의 아이디는 "+obj); //box2가 출력됨
+        var div = document.getElementById(obj); //box2
+        // alert("당신이 선택한 div의 지금 적용된 스타일 배경색은 "+div.style.background);
+        content = document.getElementById("content");
+
+        content.style.background=div.style.background;
+    }
+</script>
+</head>
+
+
+<body>
+    <div class="wrapper">
+
+        <div id = "box1" class="box" style="background: red;" onClick="setBg('red')"></div>
+        <div id = "box2" class="box" style="background: orange;" onClick="setBg2('box2')"></div>
+        <div id = "box3" class="box" style="background:yellow;" onclick="setBg('yellow')"></div>
+        <div id = "box4" class="box" style="background:green;"onClick="setBg('green')"></div>
+        <div id = "box5" class="box" style="background: blue;" onclick="setBg('blue')"></div>
+        <div id = "box6" class="box" style="background:navy;" onclick="setBg('navy')"></div>
+        <div id = "box7" class="box" style="background:purple;" onclick="setBg('purple')"></div>
+        
+        <div id= "content">도화지</div>
+    </div>
+</body>
+</html>
