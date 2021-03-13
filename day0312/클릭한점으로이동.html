@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<style>
+    body{
+        margin:0px;
+
+    }
+    .wrapper{
+        width:100%;
+        height:700px;
+        background-color: skyblue;
+        position:relative;
+    }
+
+    #pairi{
+        width:150px;
+    
+    }
+</style>
+
+<script>
+    var pairi; //다른 함수들에서 접근하기 위해서 
+    var targetX=0; //도달할 목표 x좌표
+    var targetY=0; //도달할 목표 y좌표
+    var a = 0.1;
+
+    function init(){
+        //  움직여야 되니까 파이리의 포지션은 여기서 설정
+        pairi = document.getElementById("pairi");
+        pairi.style.position="absolute";
+        pairi.style.left=100+"px";
+        pairi.style.top = 300+"px";
+    }
+
+    //파이리가 도달할 목표지점을
+    function getPos(){
+        targetX = event.clientX; //파이리 목표설정
+        targetY = event.clientY;
+
+        console.log("x=",x,"y=",y);
+    }
+
+    function move(){
+        // 구해진 마우스 좌표를 이용하여, 파이리의 위치로 사용
+
+        pairi.style.left = parseFloat(pairi.style.left)+a*(targetX - parseFloat(pairi.style.left))+"px";
+        pairi.style.top = parseFloat(pairi.style.top)+a*(targetY - parseFloat(pairi.style.top))+"px";
+
+    }
+
+    window.addEventListener("load",function(){
+        init();
+        setInterval("move()",1)
+    });
+
+
+</script>
+</head>
+
+
+<body onmousemove="getPos()">
+    <div class = "wrapper">
+        <img src="../images/pairi.png" id = "pairi">
+    </div>
+</body>
+</html>

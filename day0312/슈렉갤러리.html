@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    .wrapper{
+        width: 500px;
+        height:400px;
+        margin: auto;
+        background-color: blanchedalmond;
+        position: relative;  /*자식인 containe 때문에*/
+
+    }
+
+    #photo-frame{
+        width: 500px;
+        height: 340px;
+        background-color: skyblue;
+        overflow: hidden;
+        position: relative;  /*자식인 containe 때문에*/
+
+    }
+
+    #navi{
+        
+        text-align: center;
+        font-size: 30px;
+    }
+
+    #container{
+      width:3500px;
+      height: 340px;
+   
+
+    }
+
+    #container img{
+        width:500px;
+        height:340px;
+        float:left;
+    }
+
+    #navi a{
+        text-decoration: none;
+        /* 링크 밑줄 없애기 */
+    }
+
+    /* pseudo */
+    #navi a:hover{  
+        /*a태그에 마우스가 올려진 상태  */
+        color : pink;
+    }
+
+    #navi a:active{  
+        /*a태그에 마우스가 누르면  */
+        color : yellowgreen;
+    }
+
+
+      
+
+</style>
+
+<script>
+    // 포지션을 제어하기 위해, 문서 로드와 동시에 container 에 absolute적용!
+
+    var targetX=-3000; //컨테이너의 x좌표를 담을 변수
+    var container;  //모든 함수에서 접근하기 위해서 
+    var a = 0.1; //이 숫자가 커질수록 걸음이 커짐(0.1~1사이로 조절하기)
+
+    function init(){
+        container = document.getElementById("container");
+        container.style.position="absolute"; // 부모를 기준으로 한 위치 속성 여기서 부모는 photo-frame
+        container.style.top=0+"px";
+        container.style.left =0+"px";
+        setInterval("move()",10);
+    }
+    // container 이동시키기
+    function move(){
+        // targetX=x; //이게 존재하면  무한 반복 할때마다 0으로 돌아가
+        // container.style.left = targetX+"px"; //순간이동
+        // 부드럽게 감속도
+        // 나의 위치 = 현재 위치 + 비율*(목표지점 - 현재 나의 위치) 
+        container.style.left = parseFloat(container.style.left) + a*(targetX-parseFloat(container.style.left))+"px";
+
+    }
+
+    function setTarget(x){
+
+        targetX = x; //새로운 목표지점 생성
+    }
+
+
+    window.addEventListener("load",function(){
+        init();
+    });
+</script>
+</head>
+
+<body>
+    <div class = "wrapper">
+        <div id = "photo-frame">
+            <!-- 길다란 사진을 모아놓은 컨테이너가 필요 -->
+            <div id = "container">
+                <img src="../images/shurek/img0.jpg">
+                <img src="../images/shurek/img1.jpg" >
+                <img src="../images/shurek/img2.jpg">
+                <img src="../images/shurek/img3.jpg">
+                <img src="../images/shurek/img4.jpg" >
+                <img src="../images/shurek/img5.jpg" >
+                <img src="../images/shurek/img6.jpg" >
+            </div>
+        </div>
+        <div id = "navi">
+            
+            <!--  이렇게 하면 url이 아니어도 먹힌다 -->
+            <!-- html 문서에 자바스크립트를 작성할 수 있는 영역은?
+                    1) script 태그 안에
+                    2) 이벤트 핸들러 
+                    3) a href 안에도 가능 (javascript:명시)
+            -->
+
+            <a href="javascript:setTarget(0)">●</a>
+            <a href="javascript:setTarget(-500)">●</a>
+            <a href="javascript:setTarget(-1000)">●</a>
+            <a href="javascript:setTarget(-1500)">●</a>
+            <a href="javascript:setTarget(-2000)">●</a>
+            <a href="javascript:setTarget(-2500)">●</a>
+            <a href="javascript:setTarget(-3000)">●</a>
+            
+        </div>
+    </div>
+</body>
+</html>
