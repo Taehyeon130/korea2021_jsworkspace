@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    .wrapper{
+        width: 500px;
+        height:700px ;
+        background-color: seashell;
+        margin: auto;
+    }
+
+    #word-area{
+        width:100%;
+        height:200px ;
+        background-color:pink;
+        font-size: 100px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    #input-area{
+        width:100%;
+        height:150px ;
+        background-color: powderblue;
+    }
+
+    #input-area input{
+        width:98%;
+        height: 100%;
+        background-color: powderblue;
+        color: white;
+        font-weight: bold;
+        font-size: 85px;
+        text-align: center;
+    }
+
+    #feedback{
+        width:100%;
+        height:200px;
+        font-size: 180px;
+        color: red;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    #score-area{
+        width:100%;
+        height: 150px;
+        font-size: 130px;
+        font-weight: bold;
+        color: black;
+        text-align: center;
+        background-color: rgb(215, 255, 201);
+    }
+</style>
+
+<script>
+    // 데이터를 배열화 시키면 순서가 생긴다!! 따라서 게임시 "다음단어"라는 개념 생성
+    var word =[
+    "모니터"
+    ,"노트북"
+    ,"마우스"
+    ,"키보드"
+    ,"지하철"
+    ,"에어팟"
+    ,"아이폰"
+    ,"맥북"
+    ,"하늘"
+    ,"떡볶이"
+    ];
+    
+    // 다른 함수에서 접근할 예정이므로 미리 전역변수로 빼놓기
+    var wordArea;
+    var inputArea;
+    var feedback;
+    var scoreArea;
+    var msg;
+    var score=0;
+
+    var i=0; //배열 접근 시 사용할 인덱스 변수!!
+
+    function enter(){ // 엔터쳤을때만 수행되게 하려면? 조건!! // 아스키코드값이 엔터값인 경우
+        feedback.innerText="";
+        // alert(event.keyCode);
+        if(event.keyCode == 13){ //엔터치면
+           //i는 아무때나 실행되면 안됨, 단어가 일치할때만 수행해야함
+           
+           if(wordArea.innerText==msg.value){
+               i++;
+               score+=10;
+               printWord();
+               //맞음에 대한 feedback
+                feedback.innerText="O";
+                //점수 10점 증가
+                scoreArea.innerText= (score) +"점";
+            }else{
+                i++;
+                printWord();
+                //틀림에 대한 feedback
+                feedback.innerText="X";
+
+            }
+            // 이미 입력한 텍스트는 초기화
+            msg.value="";
+
+            if(i==10){
+                feedback.innerText="END";
+                wordArea.innerText="";
+            }
+            
+        }
+    }
+
+    // 프로그램 가동과 동시에 무언가 할 작업(초기화)이 있다면 여기서 처리함
+    function init(){
+        wordArea = document.getElementById("word-area");
+        inputArea = document.getElementById("input-area");
+        feedback = document.getElementById("feedback");
+        scoreArea = document.getElementById("score-area");
+        msg = document.getElementById("msg");
+        
+    }
+
+    //유저가 따라치게될 메시지 출력함수
+    function printWord(){
+        wordArea.innerText = word[i];
+        
+    }
+
+    window.addEventListener("load",function(){
+        init();
+        printWord();
+        //프로그램 가동과 동시에 텍스트 박스에 커서 위치시키기
+        msg.focus();
+    });
+</script>
+</head>
+
+
+<body>
+    <div class ="wrapper">
+        <div id = "word-area">단어 출력</div>
+        <div id="input-area">
+            <input type="text" placeholder="단어 입력"  id = "msg" onkeyup="enter()">
+        </div>
+        <div id="feedback"></div>
+        <div id="score-area">0점</div>
+    </div>
+</body>
+</html>

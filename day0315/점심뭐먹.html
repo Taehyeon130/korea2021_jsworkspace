@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<script>
+    //원하는 메뉴를 선택하기 전에, 컴퓨터에서 랜덤을 구하는 방법부터 배워야함
+    // 대부분의 언어와 비슷(java, javascript 흡사)
+
+    var food=["떡볶이","피자","초밥","만두","곱창","연어","햄버거","피자","산낙지","코다리"]
+    // 0~8까지만 구해야함
+    
+    function getRandom(){
+        // 배열의 길이를 구하는 속성 : 배열.length
+        console.log("당신이 선택할수 있는 음식의 수는",food.length);  //배열의 길이 구하기
+        // 이 함수를 호출할때마다 랜덤값을 반환받아보자!!
+        var r = parseInt(Math.random()*9); 
+        // var r = parseInt(Math.random()); 
+        // 10을곱해서 9까지 나옴 9를 곱해야 8까지가 최대값
+        //js가 0~1사이의 난수를 랜덤하게 반환해줌
+        console.log("오늘의 추천메뉴 :" ,food[r]);
+    }
+
+</script>
+</head>
+<body>
+    <button onclick="getRandom()">랜덤값 구하기</button>
+</body>
+</html>
