@@ -1,0 +1,148 @@
+<!-- 
+
+    1. 전체 그리드 설정, 배경 이미지 설정하기
+    2. 마우스 클릭한 위치에 점찍기 createPos()
+        위치가 자유롭지 않을것
+
+        3. 점위치 배열에 넣기
+        4. log에 출력하기
+        5. 캐릭터 올려놓기
+        6. 버튼 생성
+
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    body{
+        margin: 0px;
+    }
+
+    .wrapper{
+        width:1200px;
+        height:900px;
+        background-color: whitesmoke;
+        overflow: hidden; /*자식의 float 때문에*/
+    }
+
+    #content{
+        width:1000px;
+        height: 100%;
+        background:url("../images/roller.png") ;
+        background-repeat: no-repeat;
+        background-size: 1000px 900px;
+        float: left;
+    }
+
+    #log{
+        width: 200px;
+        height: 100%;
+        background-color: pink;
+        float: left;
+        overflow: scroll;
+
+    }
+
+</style>
+
+<script>
+    var content;
+    var log;   
+    var pointArray=[]; //점의 쌍을 모아놓을 이차원 배열이 될 일차원 배열
+    var img; //전역변수로,,, 주인공
+    var index = 0;//이차원 배열을 순차적으로 접근하기 위한 변수 수동 움직임에서 
+
+    function init(){
+        content = document.getElementById("content");
+        log = document.getElementById("log");  
+        createHero(); //롤러코스터 타게 될 주인공 등장시키기 
+    }
+    
+    function createHero(){
+       img = document.createElement("img");
+       img.src="../images/pairi.png";
+       img.style.width=80+"px";
+        // 프로그래밍 적으로 위치를 지정해야 추후 제어 가능
+        img.style.position="absolute";
+        img.style.left = 100+"px";
+        img.style.top = 100+"px";
+       content.appendChild(img); //화면에 부착
+    }
+
+    function createPos(){
+        //마우스를 클릭한 위치와 동일한 위치에 점을 찍자
+        var span = document.createElement("span");
+
+        span.innerText = "●";
+        span.style.fontSize=4+"px";
+        span.style.position="absolute"; //위치가 자유롭지 않아서 
+
+         var x = event.clientX;
+         var y = event.clientY;
+
+        //한쌍의 좌표(x,y)를 담을 배열 생성
+        var pos = [x,y];  //점 생성
+
+        //생성된 점의 좌표배열을 pointArray에 누적
+        pointArray.push(pos);
+
+        span.style.left=x+"px"; //마우스 위치로
+        span.style.top=y+"px"; //마우스 위치로
+        // 현재 마우스에 의해 얻어진 좌표정보가 아직 저장되고 있지 않다...
+        // 따라서 좌표 정보를 저장해보자!!
+
+        content.appendChild(span);  //그냥 이렇게만 하면 위치가 자유롭지 않음
+        printPos(); //기록 남기기
+    
+    }
+
+    // 좌표출력
+    function printPos(){
+         var str=""; //로그에 누적될 문자열 변수선언
+   
+        //좌표가 누적된 pointArray의 데이터를 div에 출력
+        for(var i=0;i<pointArray.length;i++){ //점을찍은 횟수만큼
+            //for(var j=0;j<pointArray[i].length;j++){ //하나의 점을 이루는 x,y배열만큼
+                var box = pointArray[i]; //안쪽 박스
+                // log.innerText += "["+box[0]+","+box[1]+"]"; // 다음 값 나오게 하는 거였는데이렇게 하면 너무 많이 나와
+                str = str + "["+box[0]+","+box[1]+"]\n";
+            //}
+        }
+        // 문자열이 누적된 결과물을 최후에 한번만 div에 innertext로 넣어주자
+        log.innerText=str;
+    }
+
+    //수동 움직이기
+    function move(){
+        // 문서내의 img좌표를 이차원배열의 x,y좌표를 이용하여 움직이자!!
+        
+        var x = pointArray[index][0]; //x좌표
+        var y = pointArray[index][1]; //y좌표
+
+        img.style.left = x+"px";
+        img.style.top = y+"px";
+
+        index++;
+    }
+
+    window.addEventListener("load",function(){
+        init();
+    });
+
+</script>
+</head>
+
+<body>
+    <div class = "wrapper">
+        <div id="content" onmousedown="createPos()"></div>
+        <div id="log"></div>
+    </div>
+    <button onclick="move()">수동</button>
+    <button onclick = "auto()">자동</button>  
+    <!-- 자동 :auto -->
+</body>
+</html>
