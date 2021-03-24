@@ -13,3 +13,20 @@
         // console.log(r);
         return r;
     }
+
+   /*-----------------------------------------------------
+    게임 등에서 메모리 제거 및 화면상의 제거 및 화면상의 제거를 담당할 함수
+    container : 어떤 부모요소에서 지울지 결정
+    child : 어떤 요소를 지울지
+    arr : 어떤 배열에 있는지
+    index : 해당 배열의 몇번째 요소를 지울지
+    --------------------------------------------------------*/
+    function removeObject(container,child,arr,index){
+        // 화면에서 삭제(부모 div로부터 제거)
+        // 부모div.removeChild(지울대상 즉 자식요소);
+        container.removeChild(child);
+
+        // 배열에서 삭제
+        // 배열.splice(몇번째, 몇개);
+        arr.splice(index,1);
+    }

@@ -1,0 +1,92 @@
+<!-- 
+    1. 전체 틀 잡고 insertcoin 깜빡거리게 만들기
+    2. 버튼에 링크 걸기
+    3. 화면 움직이기
+    4. 주인공 객체로 생성
+    5. 키보드로 제어하기 joystick 
+    6. 딱딱한 움직임을 부드럽게 바꾸기
+    7. 총알 생성 bullet
+    8. 총알 이미지 배열에서 제거
+    9. 위에 총알 갯수 출력하기(정보)
+    
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    body{
+        background-color: black;
+    }
+    #wrapper{
+        width: 700px;
+        height: 500px;
+        border:5px solid pink;
+        margin: auto;
+        text-align: center; 
+        /* 버튼 가운데로 오게 하려고 */
+
+    }
+
+    #container{
+        height: 120px;
+
+    }
+
+    #wrapper h1{
+        text-align: center;
+        color:white;
+        font-weight: bold;
+        font-size: 70px;    
+    }
+
+    #container p{
+        text-align: center;
+        color: skyblue;
+        font-weight: bold;
+        font-size: 35px;
+    }
+
+    #wrapper button{
+        padding: 10px;
+    }
+</style>
+
+<script>
+    var flag=true;
+
+    function init(){
+        document.querySelector("button").addEventListener("click",function(){
+            //메인 페이지로 링크!!
+            // a테그를 자바스크립트로 표현한 것이 location.href
+            location.href="횡슈팅게임.html";
+        });
+    }
+
+    function blink(){ //깜빡거리는 효과
+        var dis = (flag)? "none":"block";
+        document.querySelector("p").style.display= dis; //안보이는 것
+        flag=!flag;
+    }
+
+    window.addEventListener("load",function(){
+        init();
+       setInterval("blink()",500);
+    });
+
+</script>
+</head>
+<body>
+    <div id="wrapper">
+        <h1>World War III</h1>
+        <div id="container">
+            <p>INSERT COIN</p>
+        </div>
+        <button>Game Start</button>
+    </div>
+</body>
+</html>
