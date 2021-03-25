@@ -1,0 +1,415 @@
+<!-- 
+    1. 전체 틀 잡기 가운데 부분에도 div두개 추가해서
+    2. getlist 처리하기 innerHTML로
+    3 .버튼눌러서 나오기
+    4. 번호 내림차순
+    5. 통계 돈에 들어갈 데이터데 결점있음 문자가 들어가니까 통계내야하는데
+        isNaN이용해서 alert주고 하기
+    6. 누적된 값출력하기
+
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../js/font.js"></script>
+<title>회원관리</title>
+<style>
+    .wrapper{
+        width: 1000px;
+        height: 600px;
+        background-color: gray;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    #regist-area, #detail-area{
+        width: 150px;
+        height: 100%;
+        background-color: lavender;
+        float: left;
+    }
+
+    #regist-area input, #detail-area input{
+        width:90%;
+        font-size: 18px;
+        border-radius: 5%;
+        background-color: rgb(255, 207, 214);
+        color: white;
+        border: 1px solid #ffffff;
+        margin-left: 5px;
+        margin-top: 6px;
+    }
+
+    #list-area{
+        margin-top: 20px;
+    }
+
+    #search-area{
+        margin-left: 10px;
+        margin-top: 8px;
+    }
+
+
+    #list-wrapper{
+        width:700px;
+        height: 100%;
+        background-color: lemonchiffon;
+        float: left;
+        overflow: scroll;
+    }
+    #regist {
+        margin-top: 10px;
+        margin-left: 28%;
+    }
+
+    #replace{
+        margin-top:10px;
+        margin-left:18%;
+    }
+
+    #delete{
+        margin-top: 10px;
+        margin-left:6px;
+    }
+
+
+</style>
+<script src="../js/font.js"></script>
+<!-- 입력양식의 데이터를 보관한 후, 테이블로 출력해본다!! -->
+<script>
+    var listArea; //테이블이 출력될 div영역
+    var t_id, t_name, t_phone, t_money; 
+    var t_id2, t_name2, t_phone2, t_money2; 
+    var memberArray=[
+        ["aa","bb","010","90000"],
+        ["jj","oh","016","5000"],
+        ["hh","bb","013","80000"],
+        ["tt","wow","018","3500"],
+        ["kkk","ho","230","3070"]
+    ];//지금은 일차원이지만, 곧 등록시 2차원이 될 예정
+    // 2차원 배열은 표이고 동시에 데이터베이스로 간주해도 좋다
+    // 단, 메모리 상에서만,,,
+    var getdata=[];
+    var c=0;
+   var search_data; //사용자가 검색하는 검색어
+    var orgin_data=[]; //검색하기 전에 memberArray의 값을 담아 둘곳
+
+ 
+   
+   
+   // 등록하기
+   
+   
+    function regist(){
+
+        if(t_id.value==""){
+            alert("ID를 입력하세요");
+            t_id.focus();
+            return;
+        }else if(t_name.value==""){
+            alert("이름를 입력하세요");
+            t_name.focus();
+            return;
+        }else if(t_phone.value==""){
+            alert("Phone를 입력하세요");
+            t_phone.focus();
+            return;
+        }else if(t_money.value==""){
+            alert("자산을 입력하세요");
+            t_money.focus();
+            return;
+        }else{
+            
+        }
+
+        // 등록전에 특히 숫자형데이터에 대해서는 유효성 체크를 꼭 해두자
+        if(isNaN(t_money.value)){//문자는 true 숫자는 false
+            alert("MONEY AREA : ONLY NUMBER");
+            t_money.value="";
+            t_money.focus();
+            return; //함수 호출한 곳으로 되돌아가!!!
+        }
+
+        for(var i=0;i<memberArray.length;i++){
+            if(t_id.value==memberArray[i][0]){
+                alert("아이디 중복");
+                t_id.value="";
+                t_id.focus();
+                return;
+            }
+
+        }
+        
+        
+        //등록버튼에 의해 존재할 수있는 회원은 1명이므로,
+        //한명의 데이터는 1차원 배열에 담으면 된다!!
+        
+        var member=[]; //비어있는 배열 선언
+        member[0]=t_id.value;       //ID예정;
+        member[1]=t_name.value;  //Name예정;
+        member[2]=t_phone.value; //Phone예정;
+        member[3]=t_money.value; //Money예정;
+        // 한 사람의 정보가 메모리에 올라옴!!
+        // console.log("지금등록된 회원은 ",member);
+
+        //이차원배열 용도로 선언한 memberArray에 추가!!
+        memberArray.push(member);
+        // console.log("총 누적 회원 수",memberArray.length);
+
+        getList();
+        t_id.value="";
+        t_name.value="";
+        t_phone.value="";
+        t_money.value="";
+
+
+    }
+
+
+
+    
+    // 데이터를 테이블로 출력하기
+    function getList(){
+
+        var  tag="<table width=\"100%\" border =\"1\">";
+        tag += "<tr>";
+        tag += "<td>No</td>";
+        tag += "<td>ID</td>";
+        tag += "<td>Name</td>";
+        tag += "<td>Phone</td>";
+        tag += "<td>Money</td>";
+        tag += "</tr>";
+
+        var sum=0; //누적된 money의 값을 구하기 위함
+
+        //db에 있는 데이터를 이용하여 현재까지 누적된 회원의 정보를 출력!!
+        for(var i=memberArray.length-1;i>=0;i--){
+            
+            tag += "<tr onClick=\"pushData("+i+")\">";
+                tag += "<td>"+(i+1)+"</td>";
+                for(var a=0;a<memberArray[i].length;a++){
+                    tag += "<td>"+memberArray[i][a]+"</td>";
+                
+                }
+                sum += parseInt(memberArray[i][3]); //돈을 누적하는 횟수는 층과 관련됨
+                tag += "</tr>";
+        }
+        tag +="<tr>";
+            tag +="<td colspan='5' align='right'>가입 회원 수 : "+memberArray.length+"명, 누적 자산 :"+sum +"원</td>";
+        tag +="</tr>";
+        tag += "</table>";
+
+        // document.write()와 비슷하기는 하지만 이는 문서 전체에 지정한 문자열을 출력한다
+        listArea.innerHTML=tag;
+    }
+
+
+    //tr을 선택했을때 해당 테이터를 오른쪽에 출력해주는 함수
+    function pushData(n){    
+        c=n;
+        // console.log("선택!!");
+            for(var j=0;j<memberArray[n].length;j++){
+               getdata[j]=memberArray[n][j];
+            }
+
+        t_id2.value=getdata[0];
+        t_name2.value=getdata[1];
+        t_phone2.value=getdata[2];
+        t_money2.value=getdata[3];
+
+        
+    }
+
+
+    // 수정버튼을 눌렀을때 데이터의 값을 변경해주는 함수
+    function replaceData(){
+       
+
+        if(t_id2.value==""){
+            alert("ID를 입력하세요");
+            t_id2.focus();
+            return;
+        }else if(t_name2.value==""){
+            alert("이름를 입력하세요");
+             t_name2.focus();
+             return;
+         }else if(t_phone2.value==""){
+             alert("Phone를 입력하세요");
+             t_phone2.focus();
+             return;
+         }else if(t_money2.value==""){
+             alert("자산을 입력하세요");
+             t_money2.focus();
+             return;
+         }else{
+            
+         }
+
+        // 등록전에 특히 숫자형데이터에 대해서는 유효성 체크를 꼭 해두자
+         if(isNaN(t_money2.value)){//문자는 true 숫자는 false
+            alert("MONEY AREA : ONLY NUMBER");
+            t_money2.value="";
+            t_money2.focus();
+            return; //함수 호출한 곳으로 되돌아가!!!
+        }
+
+        if(confirm("수정하시겠어요?")){
+            memberArray[c][0]=t_id2.value;
+            memberArray[c][1]=t_name2.value;
+            memberArray[c][2]=t_phone2.value;
+            memberArray[c][3]=t_money2.value;// memberArray가 변경은 되는데 출력은 안되는 듯,,,
+    
+    
+            getList();
+            t_id2.value="";
+            t_name2.value="";
+            t_phone2.value="";
+            t_money2.value="";
+        }else{
+            t_id2.value="";
+            t_name2.value="";
+            t_phone2.value="";
+            t_money2.value="";
+        }
+        
+    }
+
+    function deleteData(){
+
+        if(t_id2.value==""){
+            alert("삭제할 데이터를 선택하세요");
+            return;
+        }else if(t_name2.value==""){
+             alert("삭제할 데이터를 선택하세요");
+             return;
+         }else if(t_phone2.value==""){
+             alert("삭제할 데이터를 선택하세요");
+             return;
+         }else if(t_money2.value==""){
+             alert("삭제할 데이터를 선택하세요");
+             return;
+         }else{
+            
+         }
+ 
+         if(confirm("정말로 데이터를 삭제하실건가요?")){
+            memberArray.splice(c,1);
+            getList();
+    
+            t_id2.value="";
+            t_name2.value="";
+            t_phone2.value="";
+            t_money2.value="";
+            
+        }else{
+            t_id2.value="";
+            t_name2.value="";
+            t_phone2.value="";
+            t_money2.value="";
+        }
+    }
+
+  
+
+    //데이터 검색하는 함수
+    function searchData(){
+
+        orgin_data=memberArray.slice();
+        console.log(orgin_data);
+
+        var category = document.getElementById("category");//검색구분
+        var keyword = document.getElementById("keyword");//검색어
+        //console.log("검색구분은 ", category.value, "검색어는 ", keyword.value);
+        var searchArray=[]; //모든 회원이 아닌, 검색된 회원만 담아놓을 배열 
+
+    for(var i=0;i<memberArray.length;i++){    //배열안의 모든 요소를 대상으로 검색
+        var member=memberArray[i];//일차원 배열 하나를 끄집어 낸다!!     
+        //선택한 카테고리의 값이 검색어와 같다면.. 검색하여 일치된 데이터 발견!!!
+        if(member[category.value]==search_data.value){
+            console.log(i+" 번째 층에서 일치되는 데이터를 발견했어요!!");
+            searchArray.push(member);
+        }
+    }
+    console.log("검색결과 발견된 레코드 수는 ", searchArray.length);
+    memberArray = searchArray; //원래 사용하고 있던 목록을 검색결과 배열로 대체!!!
+    getList();//화면갱신
+   
+    }
+
+    // 검색을 마치고 나서 원래의 데이터를 보여주기
+    function originData(){
+
+        memberArray=orgin_data.slice();
+        getList();
+    }
+    
+    function init(){
+        listArea = document.getElementById("list-area");
+        
+        // 등록용 텍스트 필드들
+        t_id=document.getElementById("t_id");
+        t_name=document.getElementById("t_name");
+        t_phone=document.getElementById("t_phone");
+        t_money=document.getElementById("t_money");
+
+        //상세보기용 텍스트 필드들
+        t_id2=document.getElementById("t_id2");
+        t_name2=document.getElementById("t_name2");
+        t_phone2=document.getElementById("t_phone2");
+        t_money2=document.getElementById("t_money2");
+
+        search_data=document.getElementById("search_data");
+        
+        getList();
+    }
+
+
+    
+    window.addEventListener("load",function(){
+        init();
+
+    });
+
+</script>
+</head>
+<body>
+    <div class="wrapper">
+        
+        <div id="regist-area">
+            <input type="text" id="t_id" placeholder="ID">
+            <input type="text" id="t_name" placeholder="Name">
+            <input type="text" id="t_phone" placeholder="Phone">
+            <input type="text" id="t_money" placeholder="Money">
+            <button onclick="regist()" id="regist">등록</button>
+        </div>
+
+        <div id="list-wrapper">
+            <div id="search-area">
+                <select id="category">
+                    <option value="0">ID로 검색</option>
+                    <option value="1">Name로 검색</option>
+                </select>
+                <input type="text" id="search_data" placeholder="검색어 입력">
+                <button onClick="searchData()" style='font-size:18px'>
+                    Search <i class='fas fa-search'></i>
+                </button>
+                <button onclick="originData()">Original-Data</button>
+
+            </div>
+            <div id="list-area"></div>    
+        </div>
+        <div id="detail-area">
+            <input type="text" id="t_id2" placeholder="ID">
+            <input type="text" id="t_name2" placeholder="Name">
+            <input type="text" id="t_phone2" placeholder="Phone">
+            <input type="text" id="t_money2" placeholder="Money">
+            <button onClick="replaceData()" id="replace">수정</button>
+            <button onClick="deleteData()" id="delete">삭제</button>
+        </div>
+    </div>
+</body>
+</html>

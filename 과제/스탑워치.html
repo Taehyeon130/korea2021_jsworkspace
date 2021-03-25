@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    #wrapper{
+        margin:  auto;
+        margin-top: 200px;
+        width:800px;
+        padding:15px; 
+        border:3px solid skyblue;
+        
+    }
+    #wrapper input{
+        font-size: 120px;
+        width: 150px;
+        text-align: right; 
+        margin-left: 30px;
+        margin-right: 30px;        
+    }
+
+    span{
+        font-size: 25px;
+    }
+</style>
+
+<script>
+    var t_hour;
+    var t_min; 
+    var t_sec;
+
+    var bt;
+    var bt2;
+
+    var sec=0; 
+    var min=0;
+    var hour=0;
+
+
+    function getZeroString(n){ 
+        var result;
+
+        if(n<10){
+           result =  "0"+n;
+        }else{
+            result = n;
+        }
+        return result;
+    }
+    
+    function countUp(){
+        sec++;
+     
+
+        if(sec==60){
+            sec=0;
+            min++;
+            t_min.value=min;
+        }
+
+        if(min==60){
+            min=0;
+            hour++;
+            t_hour.value=hour;
+        }
+
+        t_sec.value=getZeroString(sec);  
+        t_min.value=getZeroString(min);
+        t_hour.value=getZeroString(hour);
+    }
+
+    function init(){
+        var inter;
+        var wrapper=document.getElementById("wrapper");
+        bt = document.createElement("button");
+        bt2 = document.createElement("button");
+
+        bt.style.background="skyblue";
+        bt2.style.background="pink";
+
+        bt.style.width=80+"px";
+        bt2.style.width=80+"px";
+
+    
+        bt.style.padding=1+"%";
+        bt2.style.padding=1+"%";
+
+        bt.style.marginTop=50+"px";
+        bt2.style.marginTop=50+"px";
+
+        bt.style.marginLeft=300+"px";
+        bt.style.marginRight=50+"px";
+
+
+        bt.innerText="Start";
+        bt.addEventListener("click",function(){
+            inter = setInterval("countUp()",1000); 
+            
+        })
+
+        bt2.innerText="Pause";
+        bt2.addEventListener("click",function(){
+            clearInterval(inter);
+        })
+
+        t_hour = document.getElementById("t_hour");
+        t_min = document.getElementById("t_min");
+        t_sec = document.getElementById("t_sec");
+        
+        t_hour.value=0;
+        t_min.value=0;
+        t_sec.value=0;
+        
+        wrapper.appendChild(bt);
+        wrapper.appendChild(bt2);
+    }
+
+    window.addEventListener("load",function(){
+        init();
+    });
+
+</script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <input type="text" id ="t_hour"> <span>시</span>
+        <input type="text" id = "t_min"> <span>분</span>
+        <input type="text" id ="t_sec"> <span>초</span>
+    </div>
+</body>
+</html>

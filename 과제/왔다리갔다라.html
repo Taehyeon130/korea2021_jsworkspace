@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<style>
+
+    body{
+        margin:0px;
+    }
+
+    #hero{
+        position:absolute; /*부모인 body를 기준으로 위치 설정할 거임*/
+        left:0px;
+        top:250px;  
+    }
+
+
+    #space{
+        width:100%;
+        height: 500px;
+    }
+
+</style>
+
+<script>
+    // 문서내의 hero 요소의 left값을 변경시키자 + 좌표 정보 갱신
+    
+    var x=0; //우주선의 x좌표를 결정할 변수
+    var flag=true; //우주선이 0이하 490미만인지 판단하기 위해서
+    var mu =10; //한번에 10씩 움직임
+    
+    var inter;
+    
+    function move(){
+
+        x = x+mu;  //처음에 먼저 10 움직이고
+
+        //h1태그 안쪽에 좌표 텍스트 출력
+        document.querySelector("h2").innerText="x값 : "+x;
+
+        //증가시킨 변수를 우주선의 좌표에도 써먹어보자
+        document.querySelector("#hero").style.left=x+"px";
+        
+
+        flag = (x<=0 || x>=500)? !flag:flag;  
+
+        mu=(flag)? 10:-10;  
+
+        // console.log("x값 : " + x);
+        // console.log("flag값 : "+flag);
+        // console.log("uu값 : " +uu);
+        // console.log("-----------------------");
+        
+    }
+
+    function auto(){
+         inter = setInterval("move()", 100); 
+    }
+
+    function stop(){
+        clearInterval(inter);
+    }
+
+</script>
+</head>
+
+<body>
+
+    
+    <button onclick="move()">move</button>
+    <button onclick="auto()">auto move</button>
+
+    <button onclick="stop()">stop</button>
+    <h2>x값 : 0</h2>
+    <img id = "hero" src="../images/ufo.png" width="100px">
+    <div>
+        <img id = "space" src="../images/space.png">
+
+        
+    </div>
+
+</body>
+</html>
