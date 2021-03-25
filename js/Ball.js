@@ -17,8 +17,8 @@ class Ball{
         this.y=0;
         this.velX=velX; //좌우를 결정
         this.velY=velY; //상하를 결정
-        this.width = 35;
-        this.height = 35;
+        this.width =width;
+        this.height =height;
 
         this.limitX=parseInt(this.container.style.width); //공의 x축 한계점
         this.limitY=parseInt(this.container.style.height); //공의 y축 한계점
