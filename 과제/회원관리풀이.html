@@ -1,3 +1,4 @@
+  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,12 +44,13 @@ var t_id2, t_name2, t_phone2, t_money2;
 var memberArray=[
     ["batman","배트맨","010",3000],
     ["superman","수퍼맨","011",5000],
-    ["superman","수퍼맨","011",5000],
     ["xmen","엑스맨","070",6000],
     ["spiderman","스파이더맨","018",9000]
 ]; //지금은 일차원이지만, 곧 등록시 2차원이 될 예정 
 //2차원배열은 표이고, 동시에 데이터베이스로 간주해도 좋다!!
 //단, 메모리상에서만...
+
+var index=-1;//현재 보고있는 회원을 담기 위한 변수
 
 //등록하기
 function regist(){
@@ -98,7 +100,7 @@ function getList(){
         var money=memberArray[i][3];//money
 
         /* tag+="<tr onClick=\"getDetail('"+id+"' , '"+name+"', '"+phone+"', "+money+")\">";   */
-        tag+="<tr onClick=\"getDetail2('"+memberArray[i]+"')\">";   
+        tag+="<tr onClick=\"getDetail2("+i+", '"+memberArray[i]+"')\">";   
         tag+="<td>"+(i+1)+"</td>"; //얘는 배열에 넣은 적이 없으므로, 반복문에서 처리 불가
         for(var a=0;a<memberArray[i].length;a++){            
             tag+="<td>"+memberArray[i][a]+"</td>";
@@ -166,7 +168,9 @@ function getDetail(id, name, phone, money){
 }
 
 //매개변수를 4개쓰지말고,  1차원 배열을 통째로 넘겨받아 보자!!
-function getDetail2(arr){
+//n: memberArray배열에서의 n번째에 위치한 회원..
+function getDetail2(n , arr){
+    index=n;
     var member=arr.split(","); //쉼표를 구분으로, 문자열 분리!! 결과는 문자열 배열이 반환!!
     console.log("넘겨받은 문자열을 배열로 복원하니..", member);
     //화면에 출력!!
@@ -177,10 +181,25 @@ function getDetail2(arr){
 
 }
 
-// 삭제
 function del(){
+    //배열의 삭제 splice
     if(confirm("삭제하시겠습니까?")){
-
+        //memberArray 2차원배열 중, 현재 보고있는 1차원 배열만 삭제~~!~        
+        memberArray.splice(index ,1);//배열에서 한 요소 삭제!!! 즉 한명의 회원삭제 
+        getList();//화면갱신
+    }
+}
+function edit(){    
+    if(confirm(t_id2.value+"의 정보를 수정하시겠습니까?")){
+        //memberArray의 회원중 현재 봅고있는 회원의 index를 이용하여, 요소를 접근한후
+        //1차원배열인 회원정보를 수정!!!
+        memberArray[index][0]=t_id2.value;//아이디
+        memberArray[index][1]=t_name2.value;//이름
+        memberArray[index][2]=t_phone2.value;//연락처
+        memberArray[index][3]=t_money2.value;//자금
+        
+        //목록 갱싱
+        getList();
     }
 }
 
@@ -218,8 +237,8 @@ window.addEventListener("load", function(){
             <input type="text" id="t_name2" placeholder="이름 입력">                
             <input type="text" id="t_phone2" placeholder="연락처 입력">                
             <input type="text" id="t_money2" placeholder="현금자산">   
-            <button onclick="edit()">수정</button>   
-            <button onclick="del()">삭제</button>   
+            <button onClick="edit()">수정</button>   
+            <button onClick="del()">삭제</button>   
         </div>
     </div>    
 </body>
