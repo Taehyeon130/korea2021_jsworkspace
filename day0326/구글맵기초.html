@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+    var googleMap;
+
+    // 위의 div가 로드되면 접근하려고
+    function myMap() {
+        // 이부분이 json표기법
+        // 재사용이 되지 않고 바로 인스턴스가 생성되서 메모리에 올려짐
+        // javascript에서는 변수명의 쌍따옴표를 굳아 하지 않아도 됨. 다른 언어에서는 해야함
+
+        var mapProp= {
+            center:new google.maps.LatLng(37.500008712935845, 127.03549102123475),
+            zoom:20,
+        };
+        var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+        
+        //마커를 생성하자
+        var marker = new google.maps.Marker({
+            position: mapProp.center,
+            animation:google.maps.Animation.BOUNCE,//바운스바운스
+            icon:{
+                url:"../images/pairi.png",
+                scaledSize: new google.maps.Size(50,50) 
+            }
+        });
+        
+        // 생성된 마커를 적용할 맵을 지정
+        marker.setMap(map);
+
+        // 메시지 윈도우 생성
+        google.maps.event.addListener(marker,'click',function() {
+            var infowindow = new google.maps.InfoWindow({
+            content:"여기다!"
+        });
+        infowindow.open(map,marker); //메시지 윈도우가 적용될 map과마커
+
+});
+}
+
+    window.addEventListener("load",function(){
+        googleMap = document.getElementById("googleMap");
+    });
+</script>
+</head>
+<body>
+
+<h1>My First Google Map</h1>
+<div id="googleMap" style="width:100%;height:600px;"></div>
+
+<!-- 
+        구글맵을 불러오는데는,  시간이 필요하다...이때 구글맵이 브라우저에 다 로드가 되면
+        callback에서 명시한 myMap이라는 함수를 호출
+-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBF9XFdMKU0SGcs0w7dre4iGFJzlw6727I&callback=myMap"></script>
+<!-- callback은 타이밍이 중요하기 때문에 함부로 올리면 안됨, 맨밑으로 내리는게 맞어 -->
+
+</body>
+</html>
