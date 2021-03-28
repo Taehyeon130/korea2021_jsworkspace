@@ -7,6 +7,7 @@ role 4 : candy4.png)  주인공의 속도 업그레이드
 class Item{
     constructor(itemRole ,container, width, height, x, y, velX, velY){
         this.itemRole=itemRole; //각 아이템은 보유할 정보객체
+        // item은 itemRole을 가지고있다. 
         this.container=container;
         this.img=document.createElement("img");
         this.src=itemRole.src;
@@ -39,7 +40,7 @@ class Item{
 
         //내가 화면의 음수값을 가질때 즉 좌측 한계점을 지나면, 제거 
         if(this.x <0){
-            //removeObject(this.container, this.img, enemyArray , enemyArray.indexOf(this));
+            removeObject(this.container, this.img, itemArray , itemArray.indexOf(this));
         }
     } 
     

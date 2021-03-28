@@ -12,22 +12,25 @@
         width:900px;
         height:600px;
         background-color: coral;
-        /* overflow:hidden; 부모 영역을 벗어나는 컨텐츠는 과감히 가리기 */
-        overflow:scroll; /*넘치는 컨텐츠를 스크롤로 처리*/
+        overflow:hidden;
+         /* 부모 영역을 벗어나는 컨텐츠는 과감히 가리기 */
+        /* overflow:scroll;  */
+        /*넘치는 컨텐츠를 스크롤로 처리*/
     }
 
     .left-side{
         width:150px;
         height:100%;
-        background-color: cornflowerblue;
+        background-color: cornsilk;
         float:left;
     }
 
     #content{
         width:750px;
         height:100%;
-        background-color: darkkhaki;
+        background-color: lightblue;
         float:left;
+        overflow:scroll;
     }
 
     img{
@@ -47,6 +50,8 @@
     function showProduct(){
         count++;
         console.log("count 값은",count);
+
+        
     // 함수 호출 시, 문서내의 content요소안에 img태그를 
     // 동적으로 생성하여 자식요소로 두기
  
@@ -77,7 +82,7 @@
             <input type="text" value ="3" id="txt">
             <button onClick="showProduct()">display</button>
         </div>
-            <div id="content"></div>
+            <div id="content" ></div>
     </div>
 </body>
 </html>

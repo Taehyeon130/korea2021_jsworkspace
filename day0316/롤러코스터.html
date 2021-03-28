@@ -3,7 +3,6 @@
     1. 전체 그리드 설정, 배경 이미지 설정하기
     2. 마우스 클릭한 위치에 점찍기 createPos()
         위치가 자유롭지 않을것
-
         3. 점위치 배열에 넣기
         4. log에 출력하기
         5. 캐릭터 올려놓기
@@ -127,6 +126,10 @@
         img.style.top = y+"px";
 
         index++;
+    }
+
+    function auto(){
+        setInterval("move()",100);
     }
 
     window.addEventListener("load",function(){

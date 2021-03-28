@@ -108,7 +108,7 @@
                 //생성된 모든 사각형에 대해 마우스 이벤트 부여하자
                 rect.addEventListener("mouseover",function(){
                     //지금 이벤트를 일으킨 요소의 style의 배경색 변경
-                    if(true){
+                    if(flag){
                         this.style.background = "purple";
                         //층과 호를 구해서 1차원 배열로 저장한 후 최종적으로 recordArray에 저장
                         var pos = this.id.split(","); //split()컴마를 기주으로 문자열을 나누고 그 결과를 배열로 반환해준다.

@@ -1,0 +1,70 @@
+<!-- 버튼을 눌렀을 때 카드가 나오게 순서대로 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            width:900px;
+            height: 600px;
+            margin:auto;
+            background-color: skyblue;
+        }
+        img{
+            width:100px;
+        }
+    </style>
+    <script>
+        var count=1;
+
+        window.addEventListener("load",function(){
+            var bt = document.querySelector("button");
+
+            bt.addEventListener("click",function(){
+                show_card();
+            })
+        })
+
+        function show_card(){
+            
+            var img = document.createElement("img");
+           
+
+            if(count==1){
+                img.src = "../images/"+count+".png";
+                document.querySelector("#wrapper").appendChild(img);
+                count++;
+            }else if(count==2){
+                img.src = "../images/"+count+".png";
+            document.querySelector("#wrapper").appendChild(img);
+            count++;
+            }else  if(count==3){
+                img.src = "../images/"+count+".png";
+            document.querySelector("#wrapper").appendChild(img);
+            count++;
+            }else if(count==4){
+                img.src = "../images/"+count+".png";
+            document.querySelector("#wrapper").appendChild(img);
+            count++;
+            }else  if(count==5){
+                img.src = "../images/"+count+".png";
+            document.querySelector("#wrapper").appendChild(img);
+            count++;
+            } else{
+                console.log("종료");
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <div id ="wrapper">
+        <button>카드 출력 버튼</button>
+        
+    </div>
+</body>
+</html>
