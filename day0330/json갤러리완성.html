@@ -4,6 +4,13 @@
     3. 박스 생성 createBox
     4. createThumb에서 for문을 이용해서 이미지 20개 출력하기
     5. 처읔 시작할때 아이어맨이 먼저 출력되도록 영화 1거넹 대한 상세보기getDetail
+    6. 클릭한 이미지 출력되게 
+    7. pointer 클래스 생성 & createPointer
+    8.사각형 출력되고 나면 aniLoop
+    9. 클래스의 tick이랑 render >>움직이게
+    10. 포인터에 투명막
+    11. moveBox
+    12. setPage 버튼 이용
  -->
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +30,8 @@
         width: 100%;
         height: 100px;
         background-color: lightblue;
+        font-size: 65px;
+        text-align: center;
     }
     #content_wrapper{
         width: 100%;
@@ -53,27 +62,33 @@
         height: 100px;
         background-color: lightsteelblue;
         position: relative; /*자식 썸네일 때문에*/
-        /* overflow: hidden; */
+        overflow: hidden;
     }
 </style>
 <script src="../js/marvel.js"></script>
+<script src="../js/Pointer.js"></script>
 <script>
     var box;
+    var pointer;
+    var targetX=0; //box의 목표 이동 지점
 
     function init(){
         createBox(); //박스 먼저 만들고
         createThumb(); //이미지 부착해야함
+        createPointer(); //포인터 등장
         getDetail(movies.marvel[0]);
     };
 
     function createBox(){
         box=document.getElementById("box"); //이미지들을 통째로 이동시킬 박스
+        // 프로그래밍 적으로 제어하기 위해 위치값을 js에서 지정
         box.style.position="absolute";
         box.style.left=0+"px";
         box.style.top=0+"px";
         box.style.width=(100*20)+"px";
         box.style.height=100+"px";
         box.style.backgroundColor="lightyellow";
+        
     }
 
     // 썸네일 만들기
@@ -96,7 +111,11 @@
                 // console.log(img.id);제대로된 결과 안나옴 img가 지역변수라 반복문에서 갈아쳐버림
                 // 그래서 계속 19만 출력
 
-                console.log(this.id);    
+                // console.log(this.id);    
+                // pointer.targetX=this.id*100; //목표지점 설정
+                // 1000마다 다시 0으로 전환
+                pointer.targetX=(this.id*100)%1000; //버튼 누르고 할때 없어져 박스가 그래서 그럼
+
                 getDetail(movies.marvel[this.id]); //상세보기 함수 호출
             });
         }
@@ -119,10 +138,37 @@
         msg+="수익:"+obj.gross+"<br>";
         document.getElementById("detail").innerHTML=msg;
         // br때문에 text아니라 html
+
+        // 영화제목 처리
+        document.getElementById("movie_title").innerText=obj.title;
+    }
+
+    function createPointer(){
+        // container,width,height,x,y,a,targetX
+        pointer=new Pointer(document.getElementById("thumb"),100,100,0,0,0.1,0);
+
+    }
+
+    // 썸네일을 담고있는 컨테이너를 이용하여 페이지 전환 애니메이션 구현
+    function moveBox(){
+        box.style.left=parseFloat(box.style.left)+0.1*(targetX-parseFloat(box.style.left))+"px";
+    }
+
+
+    function aniLoop(){
+        pointer.tick();
+        pointer.render();
+        moveBox();
+    }
+
+    function setPage(page){
+        // 박스의 목표지점
+        targetX = page;
     }
 
     window.addEventListener("load",function(){
         init();
+        setInterval("aniLoop()",10);
     });
 </script>
 </head>
@@ -133,7 +179,10 @@
             <div id="pic">사진 나올곳</div>
             <div id="detail">영화 설명</div>
         </div>
-        <div id="navi">네비게이션 버튼</div>
+        <div id="navi" style="position:relative">
+            <button style="position:absolute; left:0px" onClick="setPage(0)">Prev</button>
+            <button style="position:absolute; right:0px" onClick="setPage(-1000)">Next</button>
+        </div>
         <div id="thumb">
             <!-- 여기에 이미지 붙여야함 통째로 들고 움직일 꺼야 -->
             <div id="box"></div> 
