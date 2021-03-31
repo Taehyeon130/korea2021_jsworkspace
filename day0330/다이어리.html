@@ -44,6 +44,27 @@
     #date_area{
         height: 600px;
     }
+    #regist_form{
+        width: 600px;
+        height: 500px;
+        background-color: lavenderblush;
+        border:3px solid gray;
+        position: absolute;
+        left: 50px;
+        top: 150px;
+        border-radius: 20px;
+        display: none;
+        text-align: center;
+    }
+
+    #regist_form input{
+        width:90%;
+    }
+
+    #regist_form textarea{
+        width: 90%;
+        height: 400px;
+    }
 
 
 
@@ -54,6 +75,9 @@
     var cellSize=100; // 가로세로 100인 사각형
     var wrapper;
     var dayArray=["SUN","MON","TUE","WEN","THU","FRI","SAT"];
+    var boxArray=[]; //42개의 날짜 박스를 접근하기 위한 배열
+    var d; //현재 사용중인 날짜 객체
+    var selectedIndex=0; //현재 보고 있는 데이트 객체의 boxArray에서의 인덱스
 
     function init(){
         wrapper = document.getElementById("wrapper"); //document객체의 crateElement 메서드    
@@ -62,15 +86,14 @@
         createDate(); //날짜 값 생성
         //딜력제목으로  오늘 날짜를 기본적으로 출력하자
         getCurrentDate();
+
     }
 
     // 현재 날짜 구하기
     function getCurrentDate(){
-        var d = new Date();
-        //날짜 제목 출력
-        var yy=d.getFullYear();
-        var mm=d.getMonth();
-        setTitle(yy+"년"+" "+getZeroString(mm+1)+"월");
+        d = new Date(); //이전, 다음, 기타 여러 기능들때문에 라도 전역변수이면 좋다
+
+        printDate(); //날짜 출력
     }
 
     // 각월의 시작 요일을 알아야 날짜의 시작 위치를 결정짓는다
@@ -82,9 +105,8 @@
     }
 
     // 각월이 몇일까지 있는지
-    // 주의 함수 호출시 7월말이 궁금할 경우 매개변수로는 8월을 넘겨야함
     function getLastDate(year,month){
-        var d = new Date(year,month,0);
+        var d = new Date(year,month+1,0);
         return d.getDate(); //말월 날짜 반환
     }
 
@@ -94,6 +116,7 @@
         wrapper.style.background="lavender";
         wrapper.style.margin="auto";
         wrapper.style.overflow="hidden";
+        wrapper.style.position="relative";
     }
 
     function createDays(){
@@ -106,15 +129,82 @@
     function createDate(){
         for(var i=0;i<dayArray.length*6;i++){
             var dateBox = new DateBox(document.getElementById("date_area"),cellSize,cellSize,i,"ivory");
-
+            //  생성된 날짜 박스를 배열에 차곡 차곡 쌓아놓자 그래야 나중에 접근
+            boxArray.push(dateBox);
         }
     }
 
     // 달력의 날짜는 변경이 자주 일어나므로, 함수로 정의해 놓겠다!!
-    function setTitle(text){
-        document.getElementById("cal_title").innerText=text;
+    function setTitle(){
+        //날짜 제목 출력
+        var yy=d.getFullYear();
+        var mm=d.getMonth();
+        var str = yy+"년"+getZeroString(mm+1)+"월";
+        document.getElementById("cal_title").innerText=str;
     }
 
+    // 이전월
+    function prev(){
+        d.setDate(1);//1일로 돌려놓고 
+        d.setMonth(d.getMonth()-1); //현재 사용중인 월에 -1
+        printDate();
+    }
+    //다음월
+    function next(){
+        // 기존객체를 이용하기 때문에 날짜도 함께 변경
+        d.setDate(1);//1일로 돌려놓고 
+        d.setMonth(d.getMonth()+1); //현재 사용중인 월에 +1
+        printDate();
+    }
+    // 현재 화면에 날짜칸 div에 출력된 텍스트를 지우기
+    function resetDate(){
+        for(var i=0;i<boxArray.length;i++){
+            boxArray[i].div.innerText=""; //초기화
+        }
+    }
+
+    // 날짜를 출력하는 함수
+    function printDate(){
+        resetDate(); //지우기
+        setTitle();
+        var n=1;
+        for(var i=0;i<boxArray.length;i++){
+            //단, 이 날짜는 i가 각월의 시작 요일을 지날때부터
+            if(i>=getFirsrDayOfMonth(d.getFullYear(),d.getMonth())){
+                // 아래의 출력은 각 월의 마지막 까지만
+                if(n<=getLastDate(d.getFullYear(),d.getMonth())){
+                    boxArray[i].div.innerText =n;
+                    n++;
+                }
+            }
+        }
+    }
+
+    // 일정을 등록하는 입력 폼 띄우기
+    function openDialog(index){  //날짜가 아니라 몇번째 인지 알아보는 것
+        selectedIndex=index; //인덱스 보관
+        // alert("지금 당신이 누른 박스의 순번은 "+index);
+        document.getElementById("regist_form").style.display="block"; //보이게
+    }
+
+    // 팝업닫기
+    function closeDialog(){
+        document.getElementById("regist_form").style.display="none";
+    }
+
+    // 입력한값 등록하기
+    function regist(){
+        //지금 선택한 날짜 박스에 해당하는 DateBox객체안에 제목과 내용을 보관하자
+       var dateBox = boxArray[selectedIndex];
+       dateBox.title = document.getElementById("t_title").value; //api documnet에 근거
+       dateBox.content=document.getElementById("t_content").value;
+        closeDialog();
+        // 객체 안에 등록된 내용을 div의 text로 출력
+        var str = dateBox.div.innerText //기존에 등록되어있던 텍스트 보관
+        dateBox.div.innerHTML=str+"<br>"+dateBox.title+"<br>"+dateBox.content;
+        document.getElementById("t_title").value="";
+        document.getElementById("t_content").value="";
+    }
     window.addEventListener("load",function(){
         init();
     });
@@ -123,10 +213,16 @@
 </head>
 <body>
     <div id="wrapper">
+        <div id="regist_form">
+            <button onclick="closeDialog()">Close</button><br>
+            <input type="text" placeholder="제목입력" id="t_title"><br>
+            <textarea placeholder="내용입력" id="t_content"></textarea><br>
+            <button onclick="regist()">Regist</button>
+        </div>
         <div id="navi">
-            <button id="bt_prev"></button>
+            <button id="bt_prev" onclick="prev()">Prev</button>
             <span id="cal_title">2021년 03월</span>
-            <button id="bt_next"></button>
+            <button id="bt_next" onclick="next()">Next</button>
         </div>
         <div id="day_area"></div>
         <div id="date_area"></div>

@@ -68,11 +68,17 @@ class Plane{
         */
         //아이템 취득 ( 아이템과의 충돌검사)
         for(var i=0; i<itemArray.length;i++){
-            if(hitTest( this.img , itemArray[i].img)){
+            if(hitTest( this.img , itemArray[i].img)){ //아이템과 충돌 발견
+                var itemRole = itemArray[i].itemRole; //주인공이랑 충돌한 아이템
+                
                 removeObject(this.container, itemArray[i].img , itemArray, i);//사탕 제거
-                //조건은 롤을 통해 처리 가능....
-                //어떤 사탕을 먹었는지를 조사 
-                weaponIndex=4;
+                //조건은 롤을 통해 처리 가능....어떤 사탕을 먹었는지를 조사 
+                switch(itemRole.role){
+                    case 0:changeWeapon();break; //무기교체
+                    case 1:clearEnemy(); break; //적군소멸
+                    case 2:increaseHp(); break; //hp추가
+                    case 3: speedUp();break; //스피드 증가  
+                }
             }
         }
         
